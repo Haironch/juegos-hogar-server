@@ -1,9 +1,12 @@
 from flask import Flask
+from flask_cors import CORS
 import os
 
 # from .ext import jwt
 from app.db import db
 from app.ext import ma, migrate
+
+cors = CORS()
 
 def create_app():
     app = Flask(__name__)
@@ -16,6 +19,7 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
+    cors.init_app(app, supports_credentials=True, origins=["*"])
 
     # Register blueprints
     from app.auth.api_v1_0 import auth_bp
